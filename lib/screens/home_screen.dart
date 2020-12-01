@@ -2,6 +2,7 @@ import 'package:boring_app/models/activity.dart';
 import 'package:boring_app/screens/favorites_screen.dart';
 import 'package:boring_app/screens/find_activity_screen.dart';
 import 'package:boring_app/services/activity_service.dart';
+import 'package:boring_app/widgets/activity_information_row.dart';
 import 'package:boring_app/widgets/gradient_button.dart';
 import 'package:boring_app/widgets/item_devider.dart';
 import 'package:boring_app/widgets/rating_bar.dart';
@@ -45,9 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => FavoritesScreen()
-                ),
+                MaterialPageRoute(builder: (_) => FavoritesScreen()),
               );
             },
           ),
@@ -58,11 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.0),
-                    topRight: Radius.circular(30.0),
-                  )),
+                color: Theme.of(context).accentColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                )
+              ),
               child: Center(
                 child: FutureBuilder<Activity>(
                   future: futureActivity,
@@ -85,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: MediaQuery.of(context).size.width - 60.0,
                             height: MediaQuery.of(context).size.height - 400.0,
                             margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
                             decoration: BoxDecoration(
                                 color: Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.all(
@@ -93,72 +94,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               children: [
                                 ItemDevider(),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.people,
-                                          color: Colors.white,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(width: 10),
-                                        Text(
-                                          snapshot.data.participants.toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline1,
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      snapshot.data.type.toUpperCase(),
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          if (isLiked) {
-                                            isLiked = false;
-                                            favorites.remove(snapshot.data);
-                                          } else {
-                                            isLiked = true;
-                                            favorites.add(snapshot.data);
-                                          }
-                                        });
-                                      },
-                                      child: Icon(
-                                        isLiked
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: Color(0xffec5ba6),
-                                        size: 35.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                ActivityInformationRow(activity: snapshot.data, isLiked: isLiked),
                                 ItemDevider(),
                                 ItemDevider(),
                                 Text('Accessibility',
                                     style:
                                         Theme.of(context).textTheme.headline1),
                                 MyRatingBar(
-                                    rating:
-                                        snapshot.data.getAccessibilityRating()),
+                                  rating: snapshot.data.getAccessibilityRating(),
+                                  isPrice: false,
+                                ),
                                 ItemDevider(),
-                                Text('Price',
-                                    style:
-                                        Theme.of(context).textTheme.headline1),
+                                Text(
+                                  'Price',
+                                  style: Theme.of(context).textTheme.headline1
+                                ),
                                 MyRatingBar(
-                                    rating: snapshot.data.getPriceRating()),
+                                  rating: snapshot.data.getPriceRating(),
+                                  isPrice: true,
+                                ),
                                 ItemDevider(),
                                 GradientButton(
                                   onPressed: () {
                                     setState(() {
                                       futureActivity = fetchRandomActivity();
+                                      isLiked = false;
                                     });
                                   },
                                   title: 'Other activity',
@@ -171,8 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => FindActivityScreen()
-                                      ),
+                                          builder: (_) => FindActivityScreen()),
                                     );
                                   },
                                   title: 'Find an activity',
