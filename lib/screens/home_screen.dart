@@ -1,10 +1,11 @@
 import 'package:boring_app/models/activity.dart';
+import 'package:boring_app/screens/favorites_screen.dart';
+import 'package:boring_app/screens/find_activity_screen.dart';
 import 'package:boring_app/services/activity_service.dart';
 import 'package:boring_app/widgets/gradient_button.dart';
 import 'package:boring_app/widgets/item_devider.dart';
 import 'package:boring_app/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -41,7 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.favorite_border_outlined),
             iconSize: 30.0,
             color: Colors.white,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => FavoritesScreen()
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -63,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Column(
                         children: [
                           Container(
-                            height: 80,
+                            height: 120,
                             width: MediaQuery.of(context).size.width - 60.0,
                             margin: EdgeInsets.only(top: 50.0),
                             child: Text(snapshot.data.activity,
@@ -159,7 +167,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 ItemDevider(),
                                 GradientButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => FindActivityScreen()
+                                      ),
+                                    );
+                                  },
                                   title: 'Find an activity',
                                   fromColor: Color(0xff7e0dfd),
                                   toColor: Color(0xffec5ba6),
