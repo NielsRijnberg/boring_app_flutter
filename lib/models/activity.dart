@@ -1,4 +1,7 @@
+
 class Activity {
+  static const int itemCount = 5;
+
   String activity;
   num accessibility;
   String type;
@@ -25,4 +28,23 @@ class Activity {
     link = json['link'];
     key = json['key'];
   }
+
+  double getAccessibilityRating() {
+    return (this.accessibility * itemCount).round().toDouble();
+  }
+
+  double getPriceRating() {
+    return (this.price * itemCount).round().toDouble();
+  }
 }
+
+final Activity likedActivity = Activity(
+    activity: 'Learn Flutter',
+    accessibility: 0.8,
+    type: 'education',
+    participants: 1,
+    price: 0.0,
+    link: '',
+    key: '');
+
+List<Activity> favorites = [likedActivity];

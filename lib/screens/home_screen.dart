@@ -1,6 +1,10 @@
 import 'package:boring_app/models/activity.dart';
 import 'package:boring_app/services/activity_service.dart';
+import 'package:boring_app/widgets/gradient_button.dart';
+import 'package:boring_app/widgets/item_devider.dart';
+import 'package:boring_app/widgets/rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,10 +13,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<Activity> futureActivity;
+  bool isLiked = false;
 
   @protected
   @mustCallSuper
-  void didChangeDependencies() { 
+  void didChangeDependencies() {
     super.didChangeDependencies();
     futureActivity = fetchRandomActivity();
   }
@@ -23,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: Text(
-          'Chats', 
+          'Activities to do',
           style: TextStyle(
-            fontSize: 28.0, 
+            fontSize: 28.0,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -33,27 +38,148 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.favorite_border_outlined),
             iconSize: 30.0,
             color: Colors.white,
             onPressed: () {},
           ),
         ],
       ),
-      body: Center(
-        child: FutureBuilder<Activity>(
-          future: futureActivity,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.accessibility.toString());
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            // By default, show a loading spinner.
-            return CircularProgressIndicator();
-          },
-        ),
-      )
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  )),
+              child: Center(
+                child: FutureBuilder<Activity>(
+                  future: futureActivity,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Container(
+                            height: 80,
+                            width: MediaQuery.of(context).size.width - 60.0,
+                            margin: EdgeInsets.only(top: 50.0),
+                            child: Text(snapshot.data.activity,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28.0,
+                                )),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 60.0,
+                            height: MediaQuery.of(context).size.height - 400.0,
+                            margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(30.0),
+                                )),
+                            child: Column(
+                              children: [
+                                ItemDevider(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.people,
+                                          color: Colors.white,
+                                          size: 30.0,
+                                        ),
+                                        SizedBox(width: 10),
+                                        Text(
+                                          snapshot.data.participants.toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline1,
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      snapshot.data.type.toUpperCase(),
+                                      style:
+                                          Theme.of(context).textTheme.headline2,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          if (isLiked) {
+                                            isLiked = false;
+                                            favorites.remove(snapshot.data);
+                                          } else {
+                                            isLiked = true;
+                                            favorites.add(snapshot.data);
+                                          }
+                                        });
+                                      },
+                                      child: Icon(
+                                        isLiked
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        color: Color(0xffec5ba6),
+                                        size: 35.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ItemDevider(),
+                                ItemDevider(),
+                                Text('Accessibility',
+                                    style:
+                                        Theme.of(context).textTheme.headline1),
+                                MyRatingBar(
+                                    rating:
+                                        snapshot.data.getAccessibilityRating()),
+                                ItemDevider(),
+                                Text('Price',
+                                    style:
+                                        Theme.of(context).textTheme.headline1),
+                                MyRatingBar(
+                                    rating: snapshot.data.getPriceRating()),
+                                ItemDevider(),
+                                GradientButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      futureActivity = fetchRandomActivity();
+                                    });
+                                  },
+                                  title: 'Other activity',
+                                  fromColor: Color(0xfff05fa0),
+                                  toColor: Color(0xfffeb342),
+                                ),
+                                ItemDevider(),
+                                GradientButton(
+                                  onPressed: () {},
+                                  title: 'Find an activity',
+                                  fromColor: Color(0xff7e0dfd),
+                                  toColor: Color(0xffec5ba6),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -13,8 +13,14 @@ class MyApp extends StatelessWidget {
       title: 'Boring App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.purple[900],
-        accentColor: Colors.purple[100],
+        primaryColor: Color(0xff2e277e),
+        accentColor: Color(0xffcac6fb),
+
+        textTheme: TextTheme(
+          button: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          headline1: TextStyle(fontSize: 24.0,  fontWeight: FontWeight.normal, color: Colors.white),
+          headline2: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+        )
       ),
       home: HomeScreen(),
     );
