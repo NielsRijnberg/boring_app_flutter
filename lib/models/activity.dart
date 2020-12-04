@@ -1,4 +1,3 @@
-
 class Activity {
   static const int itemCount = 5;
 
@@ -48,3 +47,15 @@ final Activity likedActivity = Activity(
     key: '');
 
 List<Activity> favorites = [likedActivity];
+
+List<String> types = [
+  'education',
+  'recreational',
+  'social',
+  'diy',
+  'charity',
+  'cooking',
+  'relaxation',
+  'music',
+  'busywork'
+];

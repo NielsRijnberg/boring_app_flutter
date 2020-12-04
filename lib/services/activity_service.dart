@@ -12,3 +12,13 @@ Future<Activity> fetchRandomActivity() async {
     throw Exception('Failed to load activity');
   }
 }
+
+Future<Activity> fetchRandomActivityByType(String type) async {
+  final response = await http.get('https://www.boredapi.com/api/activity?type=' + type);
+
+  if (response.statusCode == 200) {
+    return Activity.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load activity');
+  }
+}
