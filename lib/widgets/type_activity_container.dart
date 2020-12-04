@@ -48,8 +48,7 @@ class _TypeActivityContainerState extends State<TypeActivityContainer> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 60.0,
-                  height: MediaQuery.of(context).size.height - 500.0,
-                  margin: EdgeInsets.only(bottom: 30.0),
+                  height: MediaQuery.of(context).size.height - 400.0,
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,

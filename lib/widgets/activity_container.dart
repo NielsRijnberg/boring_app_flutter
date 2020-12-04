@@ -47,8 +47,8 @@ class _ActivityContainerState extends State<ActivityContainer> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width - 60.0,
-                  height: MediaQuery.of(context).size.height - 400.0,
-                  margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                  height: MediaQuery.of(context).size.height - 350.0,
+                  margin: EdgeInsets.only(bottom: 50.0),
                   padding: EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -60,7 +60,6 @@ class _ActivityContainerState extends State<ActivityContainer> {
                       ItemDevider(),
                       ActivityInformationRow(
                           activity: snapshot.data, isLiked: isLiked),
-                      ItemDevider(),
                       ItemDevider(),
                       Text('Accessibility',
                           style: Theme.of(context).textTheme.headline1),
